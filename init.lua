@@ -7,6 +7,23 @@ vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 vim.opt.title = true
 vim.opt.titlestring = "%f%m"
+vim.opt.wrap = false
+
+vim.api.nvim_set_keymap('n', '<leader>e', '<cmd>lua vim.diagnostic.open_float(nil, {scope="cursor"})<CR>', { noremap=true, silent=true })
+
+vim.api.nvim_create_augroup('remember_cursor_position', { clear = true })
+
+vim.api.nvim_create_autocmd('BufReadPost', {
+  group = 'remember_cursor_position',
+  callback = function()
+    local mark = vim.api.nvim_buf_get_mark(0, '"')
+    local line = mark[1]
+    local last_line = vim.api.nvim_buf_line_count(0)
+    if line > 0 and line <= last_line then
+      vim.api.nvim_win_set_cursor(0, { line, mark[2] })
+    end
+  end,
+})
 
 -- Bootstrap packer if not installed
 local ensure_packer = function()
@@ -85,6 +102,31 @@ nvim_lsp.clangd.setup{
 
     -- Show hover info
     buf_map('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>')
+
+
   end
 }
+
+local cmp = require('cmp')
+
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      require('luasnip').lsp_expand(args.body)
+    end,
+  },
+  mapping = cmp.mapping.preset.insert({
+    ['<A-j>'] = cmp.mapping.select_next_item(),   -- Alt+j selects next completion item
+    ['<A-k>'] = cmp.mapping.select_prev_item(),   -- Alt+k selects previous completion item
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<Tab>'] = cmp.mapping.confirm({ select = true }),
+    ['<CR>'] = cmp.mapping.confirm({ select = false }),
+  }),
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
+  }, {
+    { name = 'buffer' },
+  })
+})
 
