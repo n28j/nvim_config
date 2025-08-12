@@ -9,6 +9,8 @@ vim.opt.title = true
 vim.opt.titlestring = "%f%m"
 vim.opt.wrap = false
 
+vim.g.mapleader = "\\"
+
 vim.api.nvim_set_keymap('n', '<leader>e', '<cmd>lua vim.diagnostic.open_float(nil, {scope="cursor"})<CR>', { noremap=true, silent=true })
 
 vim.api.nvim_create_augroup('remember_cursor_position', { clear = true })
