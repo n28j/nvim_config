@@ -117,12 +117,13 @@ cmp.setup({
       require('luasnip').lsp_expand(args.body)
     end,
   },
-  mapping = cmp.mapping.preset.insert({
-    ['<A-j>'] = cmp.mapping.select_next_item(),   -- Alt+j selects next completion item
-    ['<A-k>'] = cmp.mapping.select_prev_item(),   -- Alt+k selects previous completion item
+  mapping = { --cmp.mapping.preset.insert({
+    ['<A-j>']     = cmp.mapping.select_next_item(),   -- Alt+j selects next completion item
+    ['<A-k>']     = cmp.mapping.select_prev_item(),   -- Alt+k selects previous completion item
     ['<C-Space>'] = cmp.mapping.complete(),
-    ['<Tab>'] = cmp.mapping.confirm({ select = true }),
-    ['<CR>'] = cmp.mapping.confirm({ select = false }),
+    ['<Tab>']     = cmp.mapping.select_next_item(),
+    ['<S-Tab>']   = cmp.mapping.select_prev_item(),
+    ['<M-CR>']    = cmp.mapping.confirm({ select = true }),
   }),
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
