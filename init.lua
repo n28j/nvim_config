@@ -83,9 +83,20 @@ cmp.setup({
 })
 
 -- Setup LSP with clangd for C/C++
-require('lspconfig').clangd.setup{}
+require('lspconfig').clangd.setup {
+    cmd = {
+        "clangd",
+        "--header-insertion=false",
+    },
+}
 
 local nvim_lsp = require('lspconfig')
+local cmp = require('cmp')
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+nvim_lsp.pyright.setup{
+    capabilities = capabilities
+}
 
 nvim_lsp.clangd.setup{
   on_attach = function(client, bufnr)
@@ -109,7 +120,6 @@ nvim_lsp.clangd.setup{
   end
 }
 
-local cmp = require('cmp')
 
 cmp.setup({
   snippet = {
@@ -118,13 +128,13 @@ cmp.setup({
     end,
   },
   mapping = { --cmp.mapping.preset.insert({
-    ['<A-j>']     = cmp.mapping.select_next_item(),   -- Alt+j selects next completion item
-    ['<A-k>']     = cmp.mapping.select_prev_item(),   -- Alt+k selects previous completion item
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<Tab>']     = cmp.mapping.select_next_item(),
-    ['<S-Tab>']   = cmp.mapping.select_prev_item(),
-    ['<M-CR>']    = cmp.mapping.confirm({ select = true }),
-  }),
+    ['<A-j>'] = cmp.mapping.select_next_item(),   -- Alt+j selects next completion item
+    ['<A-k>'] = cmp.mapping.select_prev_item(),   -- Alt+k selects previous completion item
+    --['<C-Space>'] = cmp.mapping.complete(),
+    ['<Tab>'] = cmp.mapping.select_next_item(),
+    ['<M-CR>'] = cmp.mapping.confirm({ select = true }),
+    ['<CR>'] = cmp.mapping(function(fallback) fallback() end, {"i"}),
+  },
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
