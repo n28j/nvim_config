@@ -43,22 +43,48 @@ end
 local packer_bootstrap = ensure_packer()
 
 -- Use packer to manage plugins
-require('packer').startup(function(use)
-  use 'wbthomason/packer.nvim'          -- Packer manages itself
+require('packer').startup({
+  function(use)
+    use {
+        'wbthomason/packer.nvim',         -- Packer manages itself
+        commit = "ea0cc3c"
+    }
 
-  -- LSP and completion plugins
-  use 'neovim/nvim-lspconfig'           -- Configurations for built-in LSP client
-  use 'hrsh7th/nvim-cmp'                -- Completion plugin
-  use 'hrsh7th/cmp-nvim-lsp'            -- LSP source for nvim-cmp
-  use 'hrsh7th/cmp-buffer'              -- Buffer completions
-  use 'hrsh7th/cmp-path'                -- Path completions
-  use 'L3MON4D3/LuaSnip'                -- Snippet engine
-  use 'saadparwaiz1/cmp_luasnip'        -- Snippet completions
+    -- LSP and completion plugins
+    use {
+        'neovim/nvim-lspconfig',          -- Configurations for built-in LSP client
+        commit = "f0c6ccf"
+    }
+    use {
+        'hrsh7th/nvim-cmp',               -- Completion plugin
+        commit = "b5311ab"
+    }
+    use {
+        'hrsh7th/cmp-nvim-lsp',           -- LSP source for nvim-cmp
+        commit = "a8912b8"
+    }
+    use {
+        'hrsh7th/cmp-buffer',             -- Buffer completions
+        commit = "b74fab3" 
+    }
+    use {
+        'hrsh7th/cmp-path',               -- Path completions
+        commit = "c642487"
+    }
+    use {
+        'L3MON4D3/LuaSnip',               -- Snippet engine
+        commit = "de10d84"
+    }
+    use {
+        'saadparwaiz1/cmp_luasnip',       -- Snippet completions
+        commit = "98d9cb5"
+    }
 
-  if packer_bootstrap then
-    require('packer').sync()
-  end
-end)
+    if packer_bootstrap then
+      require('packer').sync()
+    end
+  end,
+})
 
 -- Setup nvim-cmp
 local cmp = require'cmp'
